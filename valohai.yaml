@@ -30,15 +30,15 @@
     name: batch-inference
     image: tensorflow/tensorflow:2.16.1
     command:
-    - pip install pillow valohai-utils
-    - python ./batch_inference.py
+      - pip install pillow valohai-utils
+      - python ./batch_inference.py
     inputs:
-    - name: model
-    - name: images
-      default:
-      - https://valohaidemo.blob.core.windows.net/mnist/four-inverted.png
-      - https://valohaidemo.blob.core.windows.net/mnist/five-inverted.png
-      - https://valohaidemo.blob.core.windows.net/mnist/five-normal.jpg
+      - name: model
+      - name: images
+        default:
+          - https://valohaidemo.blob.core.windows.net/mnist/four-inverted.png
+          - https://valohaidemo.blob.core.windows.net/mnist/five-inverted.png
+          - https://valohaidemo.blob.core.windows.net/mnist/five-normal.jpg
 
 - step:
     name: compare-predictions
@@ -69,6 +69,7 @@
     edges:
       - [preprocess.output.preprocessed_mnist.npz, train.input.dataset]
       - [train.output.model*, evaluate.input.model]
+    reuse-executions: true
 
 - pipeline:
     name: three-trainings-pipeline
@@ -255,7 +256,6 @@
       - name: model
         description: Model output file from TensorFlow
         path: model.h5
-
 
 - pipeline:
     name: three-trainings-pipeline-dynamic
